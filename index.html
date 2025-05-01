@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis del Sector Automotriz Mexicano</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* Estilos adicionales si son necesarios */
+        .tab-button.active {
+            border-bottom-color: #3b82f6; /* Azul Tailwind blue-500 */
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        /* Estilo para asegurar que los gráficos se redimensionen */
+        .chart-container {
+            position: relative;
+            height: 300px; /* Altura base */
+            width: 100%;   /* Ancho completo */
+            max-width: 600px; /* Ancho máximo opcional */
+            margin: auto; /* Centrar */
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+             .chart-container {
+                height: 400px; /* Mayor altura en pantallas más grandes */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="bg-white shadow-md rounded-lg p-6 mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 text-center">Análisis del Sector Automotriz en México (2024)</h1>
+            <p class="text-center text-gray-600 mt-2">Un panorama interactivo de producción, ventas, exportaciones y tendencias clave.</p>
+        </header>
+
+        <div class="mb-6 bg-white rounded-lg shadow p-4">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-4 overflow-x-auto" aria-label="Tabs">
+                    <button class="tab-button active whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-blue-600 hover:border-blue-300" data-tab="resumen">
+                        <i class="fas fa-chart-line mr-1"></i> Resumen Ejecutivo
+                    </button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-blue-600 hover:border-blue-300" data-tab="panorama">
+                        <i class="fas fa-industry mr-1"></i> Panorama General
+                    </button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-blue-600 hover:border-blue-300" data-tab="produccion">
+                        <i class="fas fa-cogs mr-1"></i> Producción
+                    </button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-blue-600 hover:border-blue-300" data-tab="mercado">
+                        <i class="fas fa-shopping-cart mr-1"></i> Mercado Interno
+                    </button>
+                     <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-blue-600 hover:border-blue-300" data-tab="exportaciones">
+                        <i class="fas fa-globe-americas mr-1"></i> Exportaciones
+                    </button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-blue-600 hover:border-blue-300" data-tab="nearshoring">
+                        <i class="fas fa-map-marked-alt mr-1"></i> Nearshoring
+                    </button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-blue-600 hover:border-blue-300" data-tab="electromovilidad">
+                        <i class="fas fa-bolt mr-1"></i> Electromovilidad
+                    </button>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-blue-600 hover:border-blue-300" data-tab="tendencias">
+                        <i class="fas fa-lightbulb mr-1"></i> Tendencias y Retos
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <div id="tab-content-container" class="space-y-6">
+            <div id="resumen" class="tab-content active bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">Resumen Ejecutivo</h2>
+                <p class="text-gray-600 mb-4">
+                    El año 2024 marcó un hito para la industria automotriz mexicana, alcanzando récords históricos en producción y exportación de vehículos ligeros. Con cerca de <strong>4 millones de unidades producidas</strong> (+5.6% vs 2023) y <strong>3.5 millones exportadas</strong> (+5.4% vs 2023), México consolida su posición como potencia manufacturera global, impulsada significativamente por la demanda de Estados Unidos y el fenómeno del nearshoring.
+                </p>
+                <p class="text-gray-600 mb-4">
+                    El mercado interno también mostró fortaleza, superando las <strong>1.5 millones de unidades vendidas</strong> (+9.8% vs 2023), el tercer mejor registro histórico. La electromovilidad avanza a paso firme, aunque representa aún una pequeña fracción del mercado total, con una creciente producción y ventas de vehículos eléctricos e híbridos.
+                </p>
+                 <p class="text-gray-600">
+                    A pesar de un entorno global complejo y recientes fluctuaciones en las exportaciones a principios de 2025, el sector demuestra resiliencia. Los retos incluyen la adaptación a nuevas tecnologías, la gestión de cadenas de suministro y la necesidad de mayor inversión en infraestructura, pero las oportunidades ligadas al nearshoring, la transición energética y la innovación tecnológica perfilan un futuro prometedor.
+                </p>
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                     <h3 class="text-lg font-semibold text-blue-800 mb-2">Cifras Clave 2024 (Estimadas)</h3>
+                     <ul class="list-disc list-inside text-blue-700 space-y-1">
+                         <li>Producción Vehículos Ligeros: ~3.99 millones (+5.6%)</li>
+                         <li>Exportación Vehículos Ligeros: ~3.48 millones (+5.4%)</li>
+                         <li>Ventas Internas Vehículos Ligeros: ~1.50 millones (+9.8%)</li>
+                         <li>Principal Destino Exportación: Estados Unidos (~80%)</li>
+                         <li>Participación EVs en Ventas: ~1%</li>
+                     </ul>
+                </div>
+            </div>
+
+            <div id="panorama" class="tab-content bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">Panorama General de la Industria</h2>
+                <p class="text-gray-600 mb-4">
+                    La industria automotriz es un pilar fundamental de la economía mexicana, representando aproximadamente el <strong>3.6% del PIB nacional</strong> y el <strong>18% del PIB manufacturero</strong>. Emplea a más de un millón de personas y es un imán para la inversión extranjera directa (IED).
+                </p>
+                <p class="text-gray-600 mb-4">
+                    México se posiciona como el <strong>séptimo productor mundial de vehículos de pasajeros</strong> y el <strong>quinto en vehículos pesados</strong>. Es el principal exportador global de tractocamiones. La industria de autopartes también es robusta, siendo México el cuarto productor mundial, generando ingresos anuales superiores a los 100 mil millones de dólares.
+                </p>
+                 <p class="text-gray-600">
+                    La integración con la economía norteamericana, principalmente a través del T-MEC (USMCA), es crucial. La vasta mayoría de las exportaciones se dirigen a Estados Unidos y Canadá. El fenómeno del nearshoring está reforzando esta integración, atrayendo nuevas inversiones y fortaleciendo las cadenas de suministro regionales.
+                </p>
+            </div>
+
+            <div id="produccion" class="tab-content bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">Producción Automotriz</h2>
+                <p class="text-gray-600 mb-4">
+                    En 2024, México alcanzó un récord histórico con la producción de aproximadamente <strong>3,989,403 vehículos ligeros</strong>, superando la marca previa de 2017. Esto representó un crecimiento del <strong>5.6%</strong> en comparación con 2023. Los camiones ligeros (SUVs y Pick-ups) dominaron la producción, constituyendo cerca del 76% del total.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="chart-container">
+                        <canvas id="produccionAnualChart"></canvas>
+                        <p class="text-center text-sm text-gray-500 mt-2">Producción Anual de Vehículos Ligeros (Millones)</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="produccionMarcaChart"></canvas>
+                         <p class="text-center text-sm text-gray-500 mt-2">Producción Estimada por Fabricante 2024 (%)</p>
+                    </div>
+                </div>
+                 <p class="text-gray-600">
+                    Los principales fabricantes en términos de volumen incluyen a General Motors, Nissan, Stellantis, Ford y Volkswagen. La capacidad productiva del país sigue atrayendo inversiones, especialmente en el contexto del nearshoring y la transición hacia la electromovilidad.
+                </p>
+            </div>
+
+            <div id="mercado" class="tab-content bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">Mercado Interno (Ventas)</h2>
+                <p class="text-gray-600 mb-4">
+                    Las ventas de vehículos ligeros nuevos en México cerraron 2024 con un crecimiento del <strong>9.8%</strong> respecto a 2023, alcanzando aproximadamente <strong>1,496,806 unidades</strong>. Este es el tercer volumen de ventas más alto registrado en la historia del país, superando los niveles pre-pandemia.
+                </p>
+                 <p class="text-gray-600 mb-4">
+                    Nissan se mantuvo como la marca líder en ventas, destacando modelos como el Versa y la NP300. Le siguieron General Motors, Volkswagen, Toyota y KIA. Marcas como MG y Suzuki mostraron crecimientos importantes. Los SUVs continúan ganando popularidad entre los consumidores mexicanos.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="chart-container">
+                        <canvas id="ventasAnualesChart"></canvas>
+                        <p class="text-center text-sm text-gray-500 mt-2">Ventas Anuales de Vehículos Ligeros (Millones)</p>
+                    </div>
+                     <div class="chart-container">
+                        <canvas id="ventasMarcaChart"></canvas>
+                        <p class="text-center text-sm text-gray-500 mt-2">Participación Estimada en Ventas por Marca 2024 (%)</p>
+                    </div>
+                </div>
+                 <h3 class="text-xl font-semibold text-gray-700 mb-3 mt-6">Ventas de Híbridos y Eléctricos</h3>
+                 <p class="text-gray-600 mb-4">
+                    La venta de vehículos con tecnologías más limpias (híbridos y eléctricos) mantuvo una tendencia al alza significativa en 2024, aunque su participación total sigue siendo baja (cercana al 1% para EVs puros). En diciembre de 2024, las ventas de estos vehículos crecieron más del 40% interanual.
+                </p>
+                <div class="chart-container max-w-md mx-auto">
+                    <canvas id="ventasEVChart"></canvas>
+                    <p class="text-center text-sm text-gray-500 mt-2">Crecimiento Ventas Híbridos y Eléctricos (Miles de Unidades - datos ilustrativos)</p>
+                </div>
+            </div>
+
+            <div id="exportaciones" class="tab-content bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">Exportaciones</h2>
+                 <p class="text-gray-600 mb-4">
+                    Las exportaciones también alcanzaron un récord en 2024, con <strong>3,479,086 unidades</strong> enviadas al extranjero, un aumento del <strong>5.4%</strong> respecto a 2023. Aproximadamente el 88% de los vehículos producidos en México se destinan a mercados internacionales.
+                </p>
+                 <p class="text-gray-600 mb-4">
+                    <strong>Estados Unidos</strong> es, por amplio margen, el principal destino, recibiendo cerca del <strong>80%</strong> de los vehículos exportados. Le siguen Canadá y Alemania. México es un jugador clave en la cadena de suministro automotriz de Norteamérica, con un porcentaje significativo de los autos vendidos en EE.UU. siendo fabricados en territorio mexicano.
+                </p>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="chart-container">
+                        <canvas id="exportacionesAnualChart"></canvas>
+                         <p class="text-center text-sm text-gray-500 mt-2">Exportaciones Anuales de Vehículos Ligeros (Millones)</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="exportacionesDestinoChart"></canvas>
+                        <p class="text-center text-sm text-gray-500 mt-2">Principales Destinos de Exportación 2024 (%)</p>
+                    </div>
+                </div>
+                 <p class="text-gray-600">
+                    Aunque 2024 fue un año récord, se observó una desaceleración e incluso caídas en las exportaciones en los primeros meses de 2025, posiblemente influenciadas por factores económicos globales y tensiones comerciales.
+                </p>
+            </div>
+
+            <div id="nearshoring" class="tab-content bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">Impacto del Nearshoring</h2>
+                <p class="text-gray-600 mb-4">
+                    El nearshoring, la estrategia de relocalizar la producción más cerca del mercado final, está teniendo un impacto muy positivo en la industria automotriz mexicana. La proximidad geográfica con Estados Unidos, el T-MEC y costos competitivos hacen de México un destino atractivo para las empresas que buscan optimizar sus cadenas de suministro.
+                </p>
+                <p class="text-gray-600 mb-4">
+                    Se estima que el nearshoring podría atraer inversiones adicionales por miles de millones de dólares al sector automotriz mexicano en los próximos años. Ya se han anunciado importantes inversiones tanto para la expansión de plantas existentes como para nuevas instalaciones, incluyendo aquellas enfocadas en componentes para vehículos eléctricos.
+                </p>
+                 <p class="text-gray-600">
+                    Este fenómeno no solo impulsa la producción y exportación, sino que también fomenta el desarrollo de proveedores locales y la creación de empleos calificados. Sin embargo, para capitalizar completamente esta oportunidad, México necesita continuar invirtiendo en infraestructura clave, especialmente en energía, logística y conectividad.
+                </p>
+                 <div class="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+                     <h3 class="text-lg font-semibold text-green-800 mb-2"><i class="fas fa-check-circle mr-1"></i> Beneficios Clave del Nearshoring</h3>
+                     <ul class="list-disc list-inside text-green-700 space-y-1">
+                         <li>Atracción de Inversión Extranjera Directa (IED).</li>
+                         <li>Fortalecimiento de cadenas de suministro regionales.</li>
+                         <li>Creación de empleos y desarrollo de talento.</li>
+                         <li>Impulso a la producción y exportación.</li>
+                         <li>Transferencia de tecnología y conocimiento.</li>
+                     </ul>
+                </div>
+            </div>
+
+             <div id="electromovilidad" class="tab-content bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">Electromovilidad en México</h2>
+                 <p class="text-gray-600 mb-4">
+                    La transición hacia la electromovilidad está en marcha en México, aunque a un ritmo más pausado que en otras regiones. La producción de vehículos eléctricos (EVs) ha crecido exponencialmente, pasando de unas pocas miles de unidades en 2020 a más de 100,000 en 2023, con proyecciones de seguir aumentando (estimado ~161,000 para 2024). General Motors es actualmente el principal productor de EVs en el país.
+                </p>
+                <p class="text-gray-600 mb-4">
+                    Las ventas de EVs e híbridos también están creciendo rápidamente, impulsadas por una mayor conciencia ambiental, incentivos gubernamentales (aunque limitados) y la llegada de nuevos modelos al mercado. Sin embargo, la participación de los EVs puros en las ventas totales sigue siendo baja, cercana al 1% en 2024.
+                </p>
+                 <p class="text-gray-600 mb-4">
+                    El desarrollo de la infraestructura de carga es un factor crítico para acelerar la adopción. Aunque el número de estaciones de carga está aumentando, se requiere una inversión significativa para crear una red robusta a nivel nacional.
+                </p>
+                 <p class="text-gray-600">
+                    México también está atrayendo inversiones en la cadena de suministro de EVs, incluyendo la producción de baterías de alto voltaje, como el anuncio de BMW en San Luis Potosí. Esto posiciona al país no solo como ensamblador, sino como un participante importante en la cadena de valor de la electromovilidad.
+                </p>
+                 <div class="mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
+                     <h3 class="text-lg font-semibold text-purple-800 mb-2"><i class="fas fa-charging-station mr-1"></i> Puntos Clave de Electromovilidad</h3>
+                     <ul class="list-disc list-inside text-purple-700 space-y-1">
+                         <li>Producción de EVs en rápido crecimiento (GM líder).</li>
+                         <li>Ventas de EVs/Híbridos al alza, pero baja penetración aún.</li>
+                         <li>Necesidad crítica de inversión en infraestructura de carga.</li>
+                         <li>Atracción de inversiones en componentes clave (baterías).</li>
+                         <li>Potencial de crecimiento significativo a mediano y largo plazo.</li>
+                     </ul>
+                </div>
+            </div>
+
+            <div id="tendencias" class="tab-content bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">Tendencias y Retos Futuros</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-3"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i>Tendencias Clave</h3>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2">
+                            <li><strong>Electrificación Acelerada:</strong> La transición hacia EVs e híbridos continuará ganando impulso, presionando a fabricantes y gobierno.</li>
+                            <li><strong>Conectividad y Autonomía:</strong> Integración de tecnologías avanzadas de asistencia al conductor (ADAS) y vehículos conectados.</li>
+                            <li><strong>Personalización:</strong> Mayor demanda de vehículos adaptados a las necesidades y estilos individuales de los consumidores.</li>
+                            <li><strong>Sostenibilidad:</strong> Presión creciente para reducir la huella de carbono en toda la cadena de valor (producción, materiales, logística).</li>
+                            <li><strong>Digitalización:</strong> Uso de análisis de datos, IA y plataformas digitales para optimizar producción, ventas y experiencia del cliente.</li>
+                        </ul>
+                    </div>
+                    <div>
+                         <h3 class="text-xl font-semibold text-gray-700 mb-3"><i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>Retos Principales</h3>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2">
+                            <li><strong>Infraestructura:</strong> Necesidad urgente de inversión en redes de carga para EVs y mejora de infraestructura logística y energética general.</li>
+                            <li><strong>Cadena de Suministro:</strong> Gestionar la volatilidad global, desarrollar proveedores locales para nuevas tecnologías (semiconductores, baterías).</li>
+                            <li><strong>Talento Humano:</strong> Formar y retener personal calificado para las nuevas demandas tecnológicas (software, electrificación).</li>
+                            <li><strong>Entorno Regulatorio:</strong> Adaptarse a normativas ambientales más estrictas y posibles cambios en políticas comerciales (T-MEC).</li>
+                             <li><strong>Competencia Global:</strong> Mantener la competitividad frente a otros centros de manufactura automotriz emergentes.</li>
+                        </ul>
+                    </div>
+                </div>
+                 <p class="text-gray-600 mt-6">
+                    El sector automotriz mexicano enfrenta un futuro de transformación. La capacidad de adaptarse a estas tendencias y superar los retos definirá su éxito continuo como potencia automotriz global. La colaboración entre industria, gobierno y academia será fundamental para navegar este panorama dinámico.
+                </p>
+            </div>
+
+        </div>
+
+        <footer class="mt-8 text-center text-sm text-gray-500">
+            <p>&copy; 2025 Análisis Interactivo. Datos recopilados de fuentes públicas como INEGI, AMIA, Secretaría de Economía, reportes de consultoras y medios especializados.</p>
+            <p>Las cifras presentadas son aproximadas y pueden variar ligeramente según la fuente. Los gráficos son ilustrativos de las tendencias.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Lógica para el cambio de pestañas
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+
+                // Desactivar todas las pestañas y contenidos
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Activar la pestaña y contenido seleccionados
+                button.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Lógica para inicializar los gráficos con Chart.js
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Gráfico: Producción Anual ---
+            const ctxProduccionAnual = document.getElementById('produccionAnualChart');
+            if (ctxProduccionAnual) {
+                new Chart(ctxProduccionAnual, {
+                    type: 'line',
+                    data: {
+                        labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
+                        datasets: [{
+                            label: 'Producción (Millones)',
+                            data: [3.81, 3.04, 2.98, 3.31, 3.78, 3.99], // Datos aproximados basados en fuentes
+                            borderColor: 'rgb(59, 130, 246)', // blue-500
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Millones de Unidades' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- Gráfico: Producción por Fabricante ---
+             const ctxProduccionMarca = document.getElementById('produccionMarcaChart');
+             if (ctxProduccionMarca) {
+                 new Chart(ctxProduccionMarca, {
+                     type: 'bar',
+                     data: {
+                         labels: ['GM', 'Nissan', 'Stellantis', 'Ford', 'VW', 'Toyota', 'Otros'],
+                         datasets: [{
+                             label: 'Participación Producción (%)',
+                             // Datos estimados y simplificados basados en reportes
+                             data: [22.3, 13.5, 12.0, 10.0, 9.5, 8.0, 24.7],
+                             backgroundColor: [
+                                 'rgba(59, 130, 246, 0.7)', // blue-500
+                                 'rgba(239, 68, 68, 0.7)',  // red-500
+                                 'rgba(245, 158, 11, 0.7)', // amber-500
+                                 'rgba(16, 185, 129, 0.7)', // emerald-500
+                                 'rgba(139, 92, 246, 0.7)', // violet-500
+                                 'rgba(236, 72, 153, 0.7)', // pink-500
+                                 'rgba(107, 114, 128, 0.7)' // gray-500
+                             ],
+                             borderColor: [
+                                 'rgb(59, 130, 246)',
+                                 'rgb(239, 68, 68)',
+                                 'rgb(245, 158, 11)',
+                                 'rgb(16, 185, 129)',
+                                 'rgb(139, 92, 246)',
+                                 'rgb(236, 72, 153)',
+                                 'rgb(107, 114, 128)'
+                             ],
+                             borderWidth: 1
+                         }]
+                     },
+                     options: {
+                         indexAxis: 'y', // Barras horizontales para mejor lectura de etiquetas
+                         responsive: true,
+                         maintainAspectRatio: false,
+                         plugins: {
+                            legend: { display: false } // Ocultar leyenda para gráfico de barras simple
+                         },
+                         scales: {
+                             x: {
+                                 beginAtZero: true,
+                                 title: { display: true, text: '%' }
+                             }
+                         }
+                     }
+                 });
+             }
+
+            // --- Gráfico: Ventas Anuales ---
+            const ctxVentasAnuales = document.getElementById('ventasAnualesChart');
+             if (ctxVentasAnuales) {
+                new Chart(ctxVentasAnuales, {
+                    type: 'line',
+                    data: {
+                        labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
+                        datasets: [{
+                            label: 'Ventas (Millones)',
+                            data: [1.32, 0.95, 1.01, 1.09, 1.36, 1.50], // Datos aproximados
+                            borderColor: 'rgb(16, 185, 129)', // emerald-500
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Millones de Unidades' }
+                            }
+                        }
+                    }
+                });
+            }
+
+             // --- Gráfico: Ventas por Marca ---
+            const ctxVentasMarca = document.getElementById('ventasMarcaChart');
+            if (ctxVentasMarca) {
+                new Chart(ctxVentasMarca, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Nissan', 'GM', 'VW', 'Toyota', 'KIA', 'Stellantis', 'Otros'],
+                        datasets: [{
+                            label: 'Participación Ventas (%)',
+                             // Datos estimados y simplificados
+                            data: [17.5, 13.5, 9.0, 8.5, 8.0, 6.5, 37.0],
+                            backgroundColor: [
+                                'rgba(239, 68, 68, 0.8)',  // red-500
+                                'rgba(59, 130, 246, 0.8)', // blue-500
+                                'rgba(139, 92, 246, 0.8)', // violet-500
+                                'rgba(217, 70, 239, 0.8)', // fuchsia-500
+                                'rgba(14, 165, 233, 0.8)', // lightBlue-500
+                                'rgba(245, 158, 11, 0.8)', // amber-500
+                                'rgba(107, 114, 128, 0.8)' // gray-500
+                            ],
+                            hoverOffset: 4
+                        }]
+                    },
+                     options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                         plugins: {
+                            legend: {
+                                position: 'top', // Posición de la leyenda
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed.toFixed(1) + '%'; // Mostrar con 1 decimal
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+             // --- Gráfico: Ventas EV/Híbridos ---
+            const ctxVentasEV = document.getElementById('ventasEVChart');
+            if (ctxVentasEV) {
+                new Chart(ctxVentasEV, {
+                    type: 'bar',
+                    data: {
+                        labels: ['2020', '2021', '2022', '2023', '2024 (Est.)'],
+                        datasets: [{
+                            label: 'Ventas Híbridos/Eléctricos (Miles)',
+                            // Datos ilustrativos de la tendencia de crecimiento
+                            data: [25, 45, 60, 85, 120],
+                            backgroundColor: 'rgba(96, 165, 250, 0.7)', // blue-400
+                            borderColor: 'rgb(59, 130, 246)', // blue-500
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                         plugins: {
+                            legend: { display: false }
+                         },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Miles de Unidades' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- Gráfico: Exportaciones Anuales ---
+            const ctxExportacionesAnual = document.getElementById('exportacionesAnualChart');
+            if (ctxExportacionesAnual) {
+                 new Chart(ctxExportacionesAnual, {
+                    type: 'line',
+                    data: {
+                        labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
+                        datasets: [{
+                            label: 'Exportaciones (Millones)',
+                            data: [3.39, 2.68, 2.71, 2.87, 3.30, 3.48], // Datos aproximados
+                            borderColor: 'rgb(234, 88, 12)', // orange-600
+                            backgroundColor: 'rgba(234, 88, 12, 0.1)',
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Millones de Unidades' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- Gráfico: Destinos de Exportación ---
+            const ctxExportacionesDestino = document.getElementById('exportacionesDestinoChart');
+            if (ctxExportacionesDestino) {
+                new Chart(ctxExportacionesDestino, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Estados Unidos', 'Canadá', 'Alemania', 'Otros'],
+                        datasets: [{
+                            label: 'Destino Exportaciones (%)',
+                            data: [79.7, 7.0, 3.5, 9.8], // Datos aproximados INEGI/Fuentes
+                             backgroundColor: [
+                                'rgba(37, 99, 235, 0.8)',  // blue-700
+                                'rgba(220, 38, 38, 0.8)',  // red-600
+                                'rgba(253, 186, 116, 0.8)', // orange-300
+                                'rgba(156, 163, 175, 0.8)' // gray-400
+                            ],
+                            hoverOffset: 4
+                        }]
+                    },
+                     options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                         plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                             tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed.toFixed(1) + '%';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+        }); // Fin DOMContentLoaded
+    </script>
+
+</body>
+</html>
